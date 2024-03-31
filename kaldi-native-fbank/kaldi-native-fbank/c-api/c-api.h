@@ -14,7 +14,7 @@ typedef struct OnlineFbank OnlineFbank;
 /// Create a new OnlineFbank object with the given sample rate
 // TODO: Consider adding more options as a struct
 // TODO: Return error code?
-OnlineFbank *OnlineFbankNew(float sample_rate);
+OnlineFbank *OnlineFbankNew(float sample_rate, int32_t num_mel_bins);
 
 /// Free the memory allocated for the OnlineFbank object
 void OnlineFbankFree(OnlineFbank *self);

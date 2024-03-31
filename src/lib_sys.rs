@@ -217,7 +217,7 @@ pub struct OnlineFbank {
 }
 extern "C" {
     #[doc = " Create a new OnlineFbank object with the given sample rate"]
-    pub fn OnlineFbankNew(sample_rate: f32) -> *mut OnlineFbank;
+    pub fn OnlineFbankNew(sample_rate: f32, num_mel_bins: i32) -> *mut OnlineFbank;
 }
 extern "C" {
     #[doc = " Free the memory allocated for the OnlineFbank object"]

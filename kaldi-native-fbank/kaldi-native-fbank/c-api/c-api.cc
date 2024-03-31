@@ -9,11 +9,12 @@ struct OnlineFbank {
   knf::OnlineGenericBaseFeature<knf::FbankComputer> *instance;
 };
 
-OnlineFbank *OnlineFbankNew(float sample_rate) {
+OnlineFbank *OnlineFbankNew(float sample_rate, int32_t num_mel_bins) {
   OnlineFbank *obj = new OnlineFbank;
   // TODO: Make customizable
   knf::FbankOptions opts;
   opts.frame_opts.samp_freq = sample_rate;
+  opts.mel_opts.num_bins = num_mel_bins;
 
   obj->instance = new knf::OnlineGenericBaseFeature<knf::FbankComputer>(opts);
   return obj;

@@ -7,8 +7,8 @@ pub struct OnlineFbank {
 
 impl OnlineFbank {
     /// Create a new OnlineFbank object with the given sample rate
-    pub fn new(sample_rate: f32) -> Self {
-        let ptr = unsafe { lib_sys::OnlineFbankNew(sample_rate) };
+    pub fn new(sample_rate: f32, num_mel_bins: i32) -> Self {
+        let ptr = unsafe { lib_sys::OnlineFbankNew(sample_rate, num_mel_bins) };
         Self { ptr }
     }
 
@@ -84,7 +84,7 @@ mod tests {
 
     #[test]
     fn test_not_enough_samples() {
-        let mut fbank = super::OnlineFbank::new(16_000f32);
+        let mut fbank = super::OnlineFbank::new(16_000f32, 80);
         fbank.accept_waveform(16_000f32, &[0.0; 160]);
         fbank.input_finished();
         let frame = fbank.get_frame(0);
@@ -93,18 +93,19 @@ mod tests {
 
     #[test]
     fn test_some_samples() {
-        let mut fbank = super::OnlineFbank::new(16_000f32);
+        let mut fbank = super::OnlineFbank::new(16_000f32, 80);
         fbank.accept_waveform(16_000f32, &[0.0; 16000 * 10]);
         fbank.input_finished();
         assert!(fbank.num_ready_frames() > 0);
         let frame = fbank.get_frame(0);
         assert!(frame.is_some());
+        assert_eq!(frame.unwrap().len(), 80);
     }
 
     #[test]
     fn test_raw_create() {
         unsafe {
-            let fbank = OnlineFbankNew(16_000f32);
+            let fbank = OnlineFbankNew(16_000f32, 80);
             let dim = OnlineFbankDim(fbank);
             dbg!(dim);
             OnlineFbankFree(fbank);
