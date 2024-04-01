@@ -1,5 +1,45 @@
+use std::ffi::CStr;
+
 #[allow(non_snake_case, non_camel_case_types, non_upper_case_globals, unused)]
 mod lib_sys;
+
+impl Default for lib_sys::FbankOptions {
+    fn default() -> Self {
+        lib_sys::FbankOptions {
+            frame_opts: lib_sys::FrameExtractionOptions {
+                samp_freq: 16_000.0,
+                frame_shift_ms: 10.0,
+                frame_length_ms: 25.0,
+                dither: 0.00003,
+                preemph_coeff: 0.97,
+                remove_dc_offset: true,
+                window_type: CStr::from_bytes_with_nul(b"povey\0").unwrap().as_ptr(),
+                round_to_power_of_two: true,
+                blackman_coeff: 0.42,
+                snip_edges: true,
+            },
+            mel_opts: lib_sys::MelBanksOptions {
+                num_bins: 25,
+                low_freq: 20.0,
+                high_freq: 0.0,
+                vtln_low: 100.0,
+                vtln_high: -500.0,
+                debug_mel: false,
+                htk_mode: false,
+                is_librosa: false,
+                norm: CStr::from_bytes_with_nul(b"slaney\0").unwrap().as_ptr(),
+            },
+            use_energy: false,
+            energy_floor: 0.0,
+            raw_energy: true,
+            htk_compat: false,
+            use_log_fbank: true,
+            use_power: true,
+        }
+    }
+}
+
+pub type FbankOptions = lib_sys::FbankOptions;
 
 pub struct OnlineFbank {
     ptr: *mut lib_sys::OnlineFbank,
@@ -7,8 +47,8 @@ pub struct OnlineFbank {
 
 impl OnlineFbank {
     /// Create a new OnlineFbank object with the given sample rate
-    pub fn new(sample_rate: f32, num_mel_bins: i32) -> Self {
-        let ptr = unsafe { lib_sys::OnlineFbankNew(sample_rate, num_mel_bins) };
+    pub fn new(options: FbankOptions) -> Self {
+        let ptr = unsafe { lib_sys::OnlineFbankNew(options) };
         Self { ptr }
     }
 
@@ -84,7 +124,8 @@ mod tests {
 
     #[test]
     fn test_not_enough_samples() {
-        let mut fbank = super::OnlineFbank::new(16_000f32, 80);
+        let options = super::FbankOptions::default();
+        let mut fbank = super::OnlineFbank::new(options);
         fbank.accept_waveform(16_000f32, &[0.0; 160]);
         fbank.input_finished();
         let frame = fbank.get_frame(0);
@@ -93,7 +134,9 @@ mod tests {
 
     #[test]
     fn test_some_samples() {
-        let mut fbank = super::OnlineFbank::new(16_000f32, 80);
+        let mut options = super::FbankOptions::default();
+        options.mel_opts.num_bins = 80;
+        let mut fbank = super::OnlineFbank::new(options);
         fbank.accept_waveform(16_000f32, &[0.0; 16000 * 10]);
         fbank.input_finished();
         assert!(fbank.num_ready_frames() > 0);
@@ -102,10 +145,42 @@ mod tests {
         assert_eq!(frame.unwrap().len(), 80);
     }
 
+    use std::ffi::*;
     #[test]
     fn test_raw_create() {
         unsafe {
-            let fbank = OnlineFbankNew(16_000f32, 80);
+            let options = super::lib_sys::FbankOptions {
+                frame_opts: FrameExtractionOptions {
+                    samp_freq: 16_000.0,
+                    frame_shift_ms: 10.0,
+                    frame_length_ms: 25.0,
+                    dither: 0.00003,
+                    preemph_coeff: 0.97,
+                    remove_dc_offset: true,
+                    window_type: CStr::from_bytes_with_nul(b"povey\0").unwrap().as_ptr(),
+                    round_to_power_of_two: true,
+                    blackman_coeff: 0.42,
+                    snip_edges: true,
+                },
+                mel_opts: MelBanksOptions {
+                    num_bins: 25,
+                    low_freq: 20.0,
+                    high_freq: 0.0,
+                    vtln_low: 100.0,
+                    vtln_high: -500.0,
+                    debug_mel: false,
+                    htk_mode: false,
+                    is_librosa: false,
+                    norm: CStr::from_bytes_with_nul(b"slaney\0").unwrap().as_ptr(),
+                },
+                use_energy: false,
+                energy_floor: 0.0,
+                raw_energy: true,
+                htk_compat: false,
+                use_log_fbank: true,
+                use_power: true,
+            };
+            let fbank = OnlineFbankNew(options);
             let dim = OnlineFbankDim(fbank);
             dbg!(dim);
             OnlineFbankFree(fbank);

@@ -8,13 +8,50 @@
 extern "C" {
 #endif
 
+typedef struct FrameExtractionOptions {
+  float samp_freq;
+  float frame_shift_ms;
+  float frame_length_ms;
+  float dither;
+  float preemph_coeff;
+  bool remove_dc_offset;
+  const char *window_type;
+  bool round_to_power_of_two;
+  float blackman_coeff;
+  bool snip_edges;
+} FrameExtractionOptions;
+
+typedef struct MelBanksOptions {
+  int32_t num_bins;
+  float low_freq;
+  float high_freq;
+  float vtln_low;
+  float vtln_high;
+  bool debug_mel;
+  bool htk_mode;
+  bool is_librosa;
+  const char *norm;
+} MelBanksOptions;
+
+typedef struct FbankOptions {
+  FrameExtractionOptions frame_opts;
+  MelBanksOptions mel_opts;
+
+  bool use_energy;
+  float energy_floor;
+  bool raw_energy;
+  bool htk_compat;
+  bool use_log_fbank;
+  bool use_power;
+} FbankOptions;
+
 /// Holds the instance of the OnlineGenericBaseFeature class
 typedef struct OnlineFbank OnlineFbank;
 
 /// Create a new OnlineFbank object with the given sample rate
 // TODO: Consider adding more options as a struct
 // TODO: Return error code?
-OnlineFbank *OnlineFbankNew(float sample_rate, int32_t num_mel_bins);
+OnlineFbank *OnlineFbankNew(FbankOptions opts);
 
 /// Free the memory allocated for the OnlineFbank object
 void OnlineFbankFree(OnlineFbank *self);

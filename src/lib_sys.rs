@@ -212,12 +212,367 @@ pub type intmax_t = __intmax_t;
 pub type uintmax_t = __uintmax_t;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
+pub struct FrameExtractionOptions {
+    pub samp_freq: f32,
+    pub frame_shift_ms: f32,
+    pub frame_length_ms: f32,
+    pub dither: f32,
+    pub preemph_coeff: f32,
+    pub remove_dc_offset: bool,
+    pub window_type: *const ::std::os::raw::c_char,
+    pub round_to_power_of_two: bool,
+    pub blackman_coeff: f32,
+    pub snip_edges: bool,
+}
+#[test]
+fn bindgen_test_layout_FrameExtractionOptions() {
+    const UNINIT: ::std::mem::MaybeUninit<FrameExtractionOptions> =
+        ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<FrameExtractionOptions>(),
+        48usize,
+        concat!("Size of: ", stringify!(FrameExtractionOptions))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<FrameExtractionOptions>(),
+        8usize,
+        concat!("Alignment of ", stringify!(FrameExtractionOptions))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).samp_freq) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(FrameExtractionOptions),
+            "::",
+            stringify!(samp_freq)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).frame_shift_ms) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(FrameExtractionOptions),
+            "::",
+            stringify!(frame_shift_ms)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).frame_length_ms) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(FrameExtractionOptions),
+            "::",
+            stringify!(frame_length_ms)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).dither) as usize - ptr as usize },
+        12usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(FrameExtractionOptions),
+            "::",
+            stringify!(dither)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).preemph_coeff) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(FrameExtractionOptions),
+            "::",
+            stringify!(preemph_coeff)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).remove_dc_offset) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(FrameExtractionOptions),
+            "::",
+            stringify!(remove_dc_offset)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).window_type) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(FrameExtractionOptions),
+            "::",
+            stringify!(window_type)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).round_to_power_of_two) as usize - ptr as usize },
+        32usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(FrameExtractionOptions),
+            "::",
+            stringify!(round_to_power_of_two)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).blackman_coeff) as usize - ptr as usize },
+        36usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(FrameExtractionOptions),
+            "::",
+            stringify!(blackman_coeff)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).snip_edges) as usize - ptr as usize },
+        40usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(FrameExtractionOptions),
+            "::",
+            stringify!(snip_edges)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct MelBanksOptions {
+    pub num_bins: i32,
+    pub low_freq: f32,
+    pub high_freq: f32,
+    pub vtln_low: f32,
+    pub vtln_high: f32,
+    pub debug_mel: bool,
+    pub htk_mode: bool,
+    pub is_librosa: bool,
+    pub norm: *const ::std::os::raw::c_char,
+}
+#[test]
+fn bindgen_test_layout_MelBanksOptions() {
+    const UNINIT: ::std::mem::MaybeUninit<MelBanksOptions> = ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<MelBanksOptions>(),
+        32usize,
+        concat!("Size of: ", stringify!(MelBanksOptions))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<MelBanksOptions>(),
+        8usize,
+        concat!("Alignment of ", stringify!(MelBanksOptions))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).num_bins) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(MelBanksOptions),
+            "::",
+            stringify!(num_bins)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).low_freq) as usize - ptr as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(MelBanksOptions),
+            "::",
+            stringify!(low_freq)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).high_freq) as usize - ptr as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(MelBanksOptions),
+            "::",
+            stringify!(high_freq)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).vtln_low) as usize - ptr as usize },
+        12usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(MelBanksOptions),
+            "::",
+            stringify!(vtln_low)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).vtln_high) as usize - ptr as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(MelBanksOptions),
+            "::",
+            stringify!(vtln_high)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).debug_mel) as usize - ptr as usize },
+        20usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(MelBanksOptions),
+            "::",
+            stringify!(debug_mel)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).htk_mode) as usize - ptr as usize },
+        21usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(MelBanksOptions),
+            "::",
+            stringify!(htk_mode)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).is_librosa) as usize - ptr as usize },
+        22usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(MelBanksOptions),
+            "::",
+            stringify!(is_librosa)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).norm) as usize - ptr as usize },
+        24usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(MelBanksOptions),
+            "::",
+            stringify!(norm)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct FbankOptions {
+    pub frame_opts: FrameExtractionOptions,
+    pub mel_opts: MelBanksOptions,
+    pub use_energy: bool,
+    pub energy_floor: f32,
+    pub raw_energy: bool,
+    pub htk_compat: bool,
+    pub use_log_fbank: bool,
+    pub use_power: bool,
+}
+#[test]
+fn bindgen_test_layout_FbankOptions() {
+    const UNINIT: ::std::mem::MaybeUninit<FbankOptions> = ::std::mem::MaybeUninit::uninit();
+    let ptr = UNINIT.as_ptr();
+    assert_eq!(
+        ::std::mem::size_of::<FbankOptions>(),
+        96usize,
+        concat!("Size of: ", stringify!(FbankOptions))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<FbankOptions>(),
+        8usize,
+        concat!("Alignment of ", stringify!(FbankOptions))
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).frame_opts) as usize - ptr as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(FbankOptions),
+            "::",
+            stringify!(frame_opts)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).mel_opts) as usize - ptr as usize },
+        48usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(FbankOptions),
+            "::",
+            stringify!(mel_opts)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).use_energy) as usize - ptr as usize },
+        80usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(FbankOptions),
+            "::",
+            stringify!(use_energy)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).energy_floor) as usize - ptr as usize },
+        84usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(FbankOptions),
+            "::",
+            stringify!(energy_floor)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).raw_energy) as usize - ptr as usize },
+        88usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(FbankOptions),
+            "::",
+            stringify!(raw_energy)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).htk_compat) as usize - ptr as usize },
+        89usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(FbankOptions),
+            "::",
+            stringify!(htk_compat)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).use_log_fbank) as usize - ptr as usize },
+        90usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(FbankOptions),
+            "::",
+            stringify!(use_log_fbank)
+        )
+    );
+    assert_eq!(
+        unsafe { ::std::ptr::addr_of!((*ptr).use_power) as usize - ptr as usize },
+        91usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(FbankOptions),
+            "::",
+            stringify!(use_power)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
 pub struct OnlineFbank {
     _unused: [u8; 0],
 }
 extern "C" {
     #[doc = " Create a new OnlineFbank object with the given sample rate"]
-    pub fn OnlineFbankNew(sample_rate: f32, num_mel_bins: i32) -> *mut OnlineFbank;
+    pub fn OnlineFbankNew(opts: FbankOptions) -> *mut OnlineFbank;
 }
 extern "C" {
     #[doc = " Free the memory allocated for the OnlineFbank object"]
