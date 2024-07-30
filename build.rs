@@ -12,6 +12,8 @@ fn main() {
             "./kaldi-native-fbank/kaldi-native-fbank/csrc/rfft.cc",
             "./kaldi-native-fbank/kaldi-native-fbank/csrc/kaldi-math.cc",
             "./kaldi-native-fbank/kaldi-native-fbank/csrc/fftsg.cc",
+            // NOTE: needed to build on windows, need to figure out why
+            "./kaldi-native-fbank/kaldi-native-fbank/csrc/whisper-feature.cc",
         ])
         // TODO: There are a bunch of those, maybe can fix them upstream
         .warnings(false)
