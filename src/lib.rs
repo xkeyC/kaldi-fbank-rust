@@ -3,32 +3,47 @@ use std::ffi::CStr;
 #[allow(non_snake_case, non_camel_case_types, non_upper_case_globals, unused)]
 mod lib_sys;
 
+impl Default for lib_sys::MelBanksOptions {
+    fn default() -> Self {
+        Self {
+            num_bins: 25,
+            low_freq: 20.0,
+            high_freq: 0.0,
+            vtln_low: 100.0,
+            vtln_high: -500.0,
+            debug_mel: false,
+            htk_mode: false,
+            is_librosa: false,
+            norm: CStr::from_bytes_with_nul(b"slaney\0").unwrap().as_ptr(),
+        }
+    }
+}
+
+pub type MelBanksOptions = lib_sys::MelBanksOptions;
+
+impl Default for lib_sys::FrameExtractionOptions {
+    fn default() -> Self {
+        Self {
+            samp_freq: 16_000.0,
+            frame_shift_ms: 10.0,
+            frame_length_ms: 25.0,
+            dither: 0.00003,
+            preemph_coeff: 0.97,
+            remove_dc_offset: true,
+            window_type: CStr::from_bytes_with_nul(b"povey\0").unwrap().as_ptr(),
+            round_to_power_of_two: true,
+            blackman_coeff: 0.42,
+            snip_edges: true,
+        }
+    }
+}
+pub type FrameExtractionOptions = lib_sys::FrameExtractionOptions;
+
 impl Default for lib_sys::FbankOptions {
     fn default() -> Self {
         lib_sys::FbankOptions {
-            frame_opts: lib_sys::FrameExtractionOptions {
-                samp_freq: 16_000.0,
-                frame_shift_ms: 10.0,
-                frame_length_ms: 25.0,
-                dither: 0.00003,
-                preemph_coeff: 0.97,
-                remove_dc_offset: true,
-                window_type: CStr::from_bytes_with_nul(b"povey\0").unwrap().as_ptr(),
-                round_to_power_of_two: true,
-                blackman_coeff: 0.42,
-                snip_edges: true,
-            },
-            mel_opts: lib_sys::MelBanksOptions {
-                num_bins: 25,
-                low_freq: 20.0,
-                high_freq: 0.0,
-                vtln_low: 100.0,
-                vtln_high: -500.0,
-                debug_mel: false,
-                htk_mode: false,
-                is_librosa: false,
-                norm: CStr::from_bytes_with_nul(b"slaney\0").unwrap().as_ptr(),
-            },
+            frame_opts: FrameExtractionOptions::default(),
+            mel_opts: MelBanksOptions::default(),
             use_energy: false,
             energy_floor: 0.0,
             raw_energy: true,
