@@ -1,5 +1,6 @@
 fn main() {
-    cc::Build::new()
+    let mut builder = cc::Build::new();
+    builder
         .cpp(true)
         .include("./kaldi-native-fbank")
         .files([
@@ -16,6 +17,9 @@ fn main() {
             "./kaldi-native-fbank/kaldi-native-fbank/csrc/whisper-feature.cc",
         ])
         // TODO: There are a bunch of those, maybe can fix them upstream
-        .warnings(false)
-        .compile("kaldi_fbank");
+        .warnings(false);
+    if cfg!(target_os = "macos") {
+        builder.flag("-std=c++14");
+    }
+    builder.compile("kaldi_fbank");
 }
