@@ -21,6 +21,7 @@
 #include <algorithm>
 #include <cmath>
 #include <vector>
+#include <cstdint>
 
 #include "kaldi-native-fbank/csrc/log.h"
 
