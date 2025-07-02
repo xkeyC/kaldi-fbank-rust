@@ -20,6 +20,8 @@
 #define KALDI_NATIVE_FBANK_CSRC_MEL_COMPUTATIONS_H_
 
 #include <cmath>
+#include <cstdint>
+#include <sstream>
 #include <string>
 #include <utility>
 #include <vector>
@@ -27,6 +29,7 @@
 #include "kaldi-native-fbank/csrc/feature-window.h"
 
 namespace knf {
+struct FrameExtractionOptions;
 
 struct MelBanksOptions {
   int32_t num_bins = 25;  // e.g. 25; number of triangular bins
@@ -168,6 +171,11 @@ class MelBanks {
   bool debug_ = false;
   bool htk_mode_ = false;
 };
+
+// Compute liftering coefficients (scaling on cepstral coeffs)
+// coeffs are numbered slightly differently from HTK: the zeroth
+// index is C0, which is not affected.
+void ComputeLifterCoeffs(float Q, std::vector<float> *coeffs);
 
 }  // namespace knf
 

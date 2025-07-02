@@ -22,6 +22,7 @@
 #include "kaldi-native-fbank/csrc/online-feature.h"
 
 #include <algorithm>
+#include <cstddef>
 #include <utility>
 #include <vector>
 
@@ -162,6 +163,7 @@ void OnlineGenericBaseFeature<C>::ComputeFeatures() {
 }
 
 template class OnlineGenericBaseFeature<FbankComputer>;
+template class OnlineGenericBaseFeature<MfccComputer>;
 template class OnlineGenericBaseFeature<WhisperFeatureComputer>;
 
 }  // namespace knf

@@ -6,6 +6,7 @@ on:
       - wheel
     tags:
       - '*'
+  workflow_dispatch:
 
 concurrency:
   group: build-wheels-macos-x64-${{ github.ref }}
@@ -18,11 +19,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest]
-        python-version: ["cp37", "cp38", "cp39", "cp310", "cp311", "cp312"]
+        os: [macos-13]
+        python-version: ["cp37", "cp38", "cp39", "cp310", "cp311", "cp312", "cp313"]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       # see https://cibuildwheel.readthedocs.io/en/stable/changelog/
       # for a list of versions
@@ -30,14 +31,16 @@ jobs:
         if: matrix.python-version == 'cp37'
         uses: pypa/cibuildwheel@v2.11.4
         env:
+          CIBW_BUILD: "${{ matrix.python-version}}-* "
           CIBW_ENVIRONMENT: KALDI_NATIVE_FBANK_CMAKE_ARGS="-DCMAKE_OSX_ARCHITECTURES='x86_64'"
           CIBW_ARCHS: "x86_64"
           CIBW_BUILD_VERBOSITY: 3
 
       - name: Build wheels
         if: matrix.python-version != 'cp37'
-        uses: pypa/cibuildwheel@v2.15.0
+        uses: pypa/cibuildwheel@v2.21.3
         env:
+          CIBW_BUILD: "${{ matrix.python-version}}-* "
           CIBW_ENVIRONMENT: KALDI_NATIVE_FBANK_CMAKE_ARGS="-DCMAKE_OSX_ARCHITECTURES='x86_64'"
           CIBW_ARCHS: "x86_64"
           CIBW_BUILD_VERBOSITY: 3
@@ -58,7 +61,17 @@ jobs:
           TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
         shell: bash
         run: |
-          python3 -m pip install --upgrade pip
-          python3 -m pip install wheel twine setuptools
+          opts='--break-system-packages'
+          v=${{ matrix.python-version }}
+          if [[ $v == cp37 || $v == cp38 || $v == cp39 ]]; then
+            opts=''
+          fi
+
+          python3 -m pip install $opts --upgrade pip
+          if [[ ${{ matrix.python-version }} == "cp37" ]]; then
+            python3 -m pip install $opts wheel twine setuptools
+          else
+            python3 -m pip install $opts wheel twine==5.0.0 setuptools
+          fi
 
           twine upload ./wheelhouse/*.whl

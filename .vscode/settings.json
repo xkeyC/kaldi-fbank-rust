@@ -1,6 +1,10 @@
 {
     "files.associations": {
         "demo": "cpp",
-        "cstdint": "cpp"
+        "cstdint": "cpp",
+        "vector": "cpp",
+        "cmath": "cpp",
+        "algorithm": "cpp",
+        "__config": "cpp"
     }
 }

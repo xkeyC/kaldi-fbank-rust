@@ -6,3 +6,5 @@ build-arm-linux-gnueabihf
 
 # vim
 *.sw?
+
+.DS_Store

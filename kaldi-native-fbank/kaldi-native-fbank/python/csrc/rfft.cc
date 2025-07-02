@@ -18,7 +18,7 @@
 
 #include "kaldi-native-fbank/python/csrc/rfft.h"
 
-#include <string>
+#include <cstdint>
 #include <vector>
 
 #include "kaldi-native-fbank/csrc/rfft.h"
@@ -27,7 +27,7 @@ namespace knf {
 
 void PybindRfft(py::module &m) {  // NOLINT
   py::class_<Rfft>(m, "Rfft")
-      .def(py::init<int32_t>(), py::arg("n"))
+      .def(py::init<int32_t, bool>(), py::arg("n"), py::arg("inverse") = false)
       .def("compute",
            [](Rfft &self, std::vector<float> &d) -> std::vector<float> {
              self.Compute(d.data());

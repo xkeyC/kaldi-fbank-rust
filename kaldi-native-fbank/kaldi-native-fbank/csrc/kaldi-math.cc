@@ -6,7 +6,11 @@
 
 #include "kaldi-native-fbank/csrc/kaldi-math.h"
 
+#if defined(_POSIX_THREAD_SAFE_FUNCTIONS)
 #include <mutex>  // NOLINT
+#endif
+
+#include <cmath>
 
 namespace knf {
 
@@ -36,6 +40,12 @@ RandomState::RandomState() {
   // offset by one (if we didn't have the "+ 27437" in the code).  27437 is just
   // a randomly chosen prime number.
   seed = unsigned(Rand()) + 27437;
+}
+
+void Sqrt(float *in_out, int32_t n) {
+  for (int32_t i = 0; i != n; ++i) {
+    in_out[i] = std::sqrt(in_out[i]);
+  }
 }
 
 }  // namespace knf

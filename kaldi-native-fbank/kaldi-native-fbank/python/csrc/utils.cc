@@ -20,7 +20,10 @@
 
 #include <string>
 
+#include "kaldi-native-fbank/csrc/feature-fbank.h"
+#include "kaldi-native-fbank/csrc/feature-mfcc.h"
 #include "kaldi-native-fbank/csrc/feature-window.h"
+#include "kaldi-native-fbank/csrc/whisper-feature.h"
 
 #define FROM_DICT(type, key)         \
   if (dict.contains(#key)) {         \
@@ -80,6 +83,7 @@ MelBanksOptions MelBanksOptionsFromDict(py::dict dict) {
 
   return opts;
 }
+
 py::dict AsDict(const MelBanksOptions &opts) {
   py::dict dict;
 
@@ -128,6 +132,63 @@ py::dict AsDict(const FbankOptions &opts) {
   AS_DICT(htk_compat);
   AS_DICT(use_log_fbank);
   AS_DICT(use_power);
+
+  return dict;
+}
+
+MfccOptions MfccOptionsFromDict(py::dict dict) {
+  MfccOptions opts;
+
+  if (dict.contains("frame_opts")) {
+    opts.frame_opts = FrameExtractionOptionsFromDict(dict["frame_opts"]);
+  }
+
+  if (dict.contains("mel_opts")) {
+    opts.mel_opts = MelBanksOptionsFromDict(dict["mel_opts"]);
+  }
+
+  FROM_DICT(int_, num_ceps);
+  FROM_DICT(bool_, use_energy);
+  FROM_DICT(float_, energy_floor);
+  FROM_DICT(bool_, raw_energy);
+  FROM_DICT(float_, cepstral_lifter);
+  FROM_DICT(bool_, htk_compat);
+
+  return opts;
+}
+
+py::dict AsDict(const MfccOptions &opts) {
+  py::dict dict;
+
+  dict["frame_opts"] = AsDict(opts.frame_opts);
+  dict["mel_opts"] = AsDict(opts.mel_opts);
+  AS_DICT(num_ceps);
+  AS_DICT(use_energy);
+  AS_DICT(energy_floor);
+  AS_DICT(raw_energy);
+  AS_DICT(cepstral_lifter);
+  AS_DICT(htk_compat);
+
+  return dict;
+}
+
+WhisperFeatureOptions WhisperFeatureOptionsFromDict(py::dict dict) {
+  WhisperFeatureOptions opts;
+
+  if (dict.contains("frame_opts")) {
+    opts.frame_opts = FrameExtractionOptionsFromDict(dict["frame_opts"]);
+  }
+
+  FROM_DICT(int_, dim);
+
+  return opts;
+}
+
+py::dict AsDict(const WhisperFeatureOptions &opts) {
+  py::dict dict;
+
+  dict["frame_opts"] = AsDict(opts.frame_opts);
+  AS_DICT(dim);
 
   return dict;
 }
