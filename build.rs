@@ -18,7 +18,7 @@ fn main() {
         ])
         // TODO: There are a bunch of those, maybe can fix them upstream
         .warnings(false);
-    if cfg!(target_os = "macos") {
+    if cfg!(target_os = "macos") || cfg!(target_os = "linux") {
         builder.flag("-std=c++14");
     }
     builder.compile("kaldi_fbank");
